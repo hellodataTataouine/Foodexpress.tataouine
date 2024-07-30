@@ -204,4 +204,11 @@ return array (
   'download_the_app' => 'Download the app',
   'click_sit_back_and_enjoy' => 'Click, sit back, and enjoy.',
   'organic_&_tasty_food_for_your_table' => "Organic & Tasty Food for you Table.",
+  'follow_us_on' => 'Follow Us on',
+  'terms_&_conditions' => 'Terms & Conditions',
+  'contact_us' => 'Contact Us',
+  'about_us' => 'About US',
+  'privacy' => 'Privacy',
+  'copyright_message' => 'Copyright 2024. All rights reserved by Hello Data',
+
 );

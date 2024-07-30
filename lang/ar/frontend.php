@@ -204,5 +204,13 @@ return array (
   'download_the_app' => 'قم بتحميل التطبيق',
   'click_sit_back_and_enjoy' => 'اضغط، واسترخ، واستمتع.',
   'organic_&_tasty_food_for_your_table' => 'طعام عضوي ولذيذ لطاولتك.',
+  'follow_us_on' => 'تابعنا على',
+  'terms_&_conditions' => 'الشروط والأحكام',
+  'contact_us' => 'اتصل بنا',
+  'about_us' => 'معلومات عنا',
+  'privacy' => 'الخصوصية',
+  'copyright_message' => 'حقوق النشر 2024. جميع الحقوق محفوظة لـ Hello Data',
+
+
 
 );

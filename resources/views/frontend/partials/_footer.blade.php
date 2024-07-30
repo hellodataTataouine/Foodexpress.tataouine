@@ -1,12 +1,12 @@
 <!--======== FOOTER PART START ========-->
-<footer class="footer">
+<footer class="footer" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
     <div class="container">
         <div class="row">
             <div class="col-12 col-sm-4 col-lg-3">
                 <div class="footer-about">
                     <a href="{{ url('/') }}" class="footer-logo"><img
                             src="{{ asset('images/' . setting('site_logo')) }}" alt="logo"></a>
-                    <p> {{ __('Follow Us on ') }} </p>
+                    <p> {{ __('frontend.follow_us_on') }} </p>
                     <nav>
                         @if (setting('facebook'))
                             <a href="{{ url(setting('facebook')) }}" class="fa-brands fa-facebook-f"></a>
@@ -29,8 +29,20 @@
                     <nav>
                         @if (!blank($footermenus))
                             @foreach ($footermenus as $footer_menu)
+
                                 @if ($footer_menu->footer_menu_section_id == \App\Enums\FooterMenuSection::ABOUT)
-                                    <a href="{{ route('page', $footer_menu) }}"> {{ $footer_menu->title }} </a>
+                                    <a href="{{ route('page', $footer_menu) }}">
+                                        @switch($footer_menu->title)
+                                            @case('Terms & Conditions')
+                                                {{ __('frontend.terms_&_conditions') }}
+                                                @break
+                                            @case('Contact Us')
+                                                {{ __('frontend.contact_us') }}
+                                                @break
+                                            @default
+
+                                        @endswitch
+                                         </a>
                                 @endif
                             @endforeach
                         @endif
@@ -44,7 +56,18 @@
                         @if (!blank($footermenus))
                             @foreach ($footermenus as $footer_menu)
                                 @if ($footer_menu->footer_menu_section_id == \App\Enums\FooterMenuSection::SERVICES)
-                                    <a href="{{ route('page', $footer_menu) }}">{{ $footer_menu->title }}</a>
+                                    <a href="{{ route('page', $footer_menu) }}">
+                                        @switch($footer_menu->title)
+                                            @case('About US')
+                                                {{ __('frontend.about_us') }}
+                                                @break
+                                            @case('Privacy')
+                                                {{ __('frontend.privacy') }}
+                                                @break
+                                            @default
+
+                                        @endswitch
+                                    </a>
                                 @endif
                             @endforeach
                         @endif
@@ -102,7 +125,8 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>{{ setting('site_footer') }}</p>
+        {{-- <p>{{ setting('site_footer') }}</p> --}}
+        <p>{{ __('frontend.copyright_message') }}</p>
     </div>
 </footer>
 <!--======= FOOTER PART END =========-->

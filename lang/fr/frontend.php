@@ -204,7 +204,12 @@ return array (
 'download_the_app' => 'Téléchargez l\'application',
 'click_sit_back_and_enjoy' => 'Cliquez, détendez-vous et profitez.',
 'organic_&_tasty_food_for_your_table' => 'Aliments Bio et Savoureux pour Votre Table.',
-
+'follow_us_on' => 'Suivez-nous sur',
+'terms_&_conditions' => 'Conditions Générales',
+'contact_us' => 'Contactez-nous',
+'about_us' => 'À propos de nous',
+'privacy' => 'Confidentialité',
+'copyright_message' => 'Droits d\'auteur 2024. Tous droits réservés à Hello Data',
 
 
 );
