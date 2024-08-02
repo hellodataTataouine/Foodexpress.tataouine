@@ -203,7 +203,7 @@ return array (
   'pay_using_various_payment_methods' => 'ادفع باستخدام وسائل الدفع المختلفة',
   'download_the_app' => 'قم بتحميل التطبيق',
   'click_sit_back_and_enjoy' => 'اضغط، واسترخ، واستمتع.',
-  'organic_&_tasty_food_for_your_table' => 'طعام عضوي ولذيذ لطاولتك.',
+  'organic_&_tasty_food_for_your_table' => 'وجبات لذيذة توصل إلى باب منزلك.',
   'follow_us_on' => 'تابعنا على',
   'terms_&_conditions' => 'الشروط والأحكام',
   'contact_us' => 'اتصل بنا',

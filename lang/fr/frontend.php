@@ -203,7 +203,7 @@ return array (
 'pay_using_various_payment_methods' => 'Payez en utilisant divers moyens de paiement',
 'download_the_app' => 'Téléchargez l\'application',
 'click_sit_back_and_enjoy' => 'Cliquez, détendez-vous et profitez.',
-'organic_&_tasty_food_for_your_table' => 'Aliments Bio et Savoureux pour Votre Table.',
+'organic_&_tasty_food_for_your_table' => 'Vos repas savoureux livrés à votre porte.',
 'follow_us_on' => 'Suivez-nous sur',
 'terms_&_conditions' => 'Conditions Générales',
 'contact_us' => 'Contactez-nous',

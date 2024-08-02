@@ -19,7 +19,7 @@ use App\Http\Services\RatingsService;
 use Illuminate\Support\Facades\Redirect;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\FrontendController;
- 
+use Illuminate\Support\Facades\Log;
 class RestaurantController extends FrontendController
 {
     protected $restaurant;
@@ -33,6 +33,7 @@ class RestaurantController extends FrontendController
 
     public function show(Restaurant $restaurant, Filepond $filepond)
     {
+       // dd($restaurant);
         $this->restaurant = $restaurant;
         $this->filepond   = $filepond;
 
@@ -41,10 +42,14 @@ class RestaurantController extends FrontendController
         }
 
         $this->loadCategoriesAndProducts();
+
         $this->loadRatings();
+
         $this->data['order_status'] = auth()->id() ? Order::where(['restaurant_id' => $this->restaurant->id, 'status' => OrderStatus::COMPLETED, 'user_id' => auth()->id()])->get() : [];
         $this->loadVouchers();
+
         $this->loadViewData();
+        ///dd($restaurant);
         return view('frontend.restaurant.show', $this->data);
     }
 
@@ -111,7 +116,9 @@ class RestaurantController extends FrontendController
     private function loadViewData()
     {
         $this->data['restaurant']  = $this->restaurant;
+
         $this->data['qrCode']      = $this->qrCode();
+
         $this->data['currenttime'] = now()->format('H:i:s');
     }
 
@@ -121,6 +128,7 @@ class RestaurantController extends FrontendController
             $image = QrCode::size(480)->format('png')->margin(1)->encoding('UTF-8');
 
             if (isset($this->restaurant->qrCode)) {
+
                 $colors = isset($this->restaurant->qrCode->color) ? explode(",", $this->restaurant->qrCode->color) : [0, 0, 0];
                 $bgColors = isset($this->restaurant->qrCode->background_color) ? explode(",", $this->restaurant->qrCode->background_color) : [255, 255, 255];
 
@@ -134,9 +142,24 @@ class RestaurantController extends FrontendController
                     $path = $this->filepond->getPathFromServerId($this->restaurant->qrCode->qrcode_logo);
                     $image = $image->merge($path, .2, true);
                 }
+
             }
+try{
+    dd(route('restaurant.show', $this->restaurant->slug));
 
             $image = $image->generate(route('restaurant.show', $this->restaurant->slug));
+}
+
+    catch (\Exception $e) {
+        // Handle the exception, you can log it or return a default image, etc.
+        // Example:
+        \Log::error('Error generating image: ' . $e->getMessage());
+
+        // Optionally, you can return a default value or take some other action
+        $image = null;
+
+}
+            dd( $image);
             return base64_encode($image);
         }
     }

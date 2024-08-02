@@ -203,7 +203,7 @@ return array (
   'pay_using_various_payment_methods' => 'Pay using various payment methods',
   'download_the_app' => 'Download the app',
   'click_sit_back_and_enjoy' => 'Click, sit back, and enjoy.',
-  'organic_&_tasty_food_for_your_table' => "Organic & Tasty Food for you Table.",
+  'organic_&_tasty_food_for_your_table' => "Delicious meals delivered to your door.",
   'follow_us_on' => 'Follow Us on',
   'terms_&_conditions' => 'Terms & Conditions',
   'contact_us' => 'Contact Us',
