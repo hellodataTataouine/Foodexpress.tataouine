@@ -197,7 +197,7 @@ return array (
 'its_as_easy_as_this' => 'C\'est aussi simple que cela',
 'provide_your_location' => 'Indiquez votre emplacement',
 'fill_out_your_address_&_search' => 'Remplissez votre adresse et recherchez',
-'choose_your_restaurant_&_food' => 'Choisissez votre restaurant et votre commande',
+'choose_your_restaurant_&_food' => 'Choisissez votre restaurant ',
 'browse_through_many_restaurant' => 'Parcourez de nombreux restaurants',
 'pay_&_get_your_food' => 'Payez et recevez votre commande',
 'pay_using_various_payment_methods' => 'Payez en utilisant divers moyens de paiement',
