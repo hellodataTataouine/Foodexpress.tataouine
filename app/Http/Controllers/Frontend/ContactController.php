@@ -37,7 +37,7 @@ class ContactController extends FrontendController
                 });
 
         } catch (\Exception $exception) {
-            dd($exception);
+           // dd($exception);
             return back()->with('error', 'Mail Not Sent');
         }
 

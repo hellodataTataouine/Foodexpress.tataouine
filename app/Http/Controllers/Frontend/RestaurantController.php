@@ -145,7 +145,7 @@ class RestaurantController extends FrontendController
 
             }
 try{
-    dd(route('restaurant.show', $this->restaurant->slug));
+   
 
             $image = $image->generate(route('restaurant.show', $this->restaurant->slug));
 }
@@ -159,7 +159,7 @@ try{
         $image = null;
 
 }
-            dd( $image);
+          //  dd( $image);
             return base64_encode($image);
         }
     }
