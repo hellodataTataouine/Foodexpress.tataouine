@@ -3,7 +3,7 @@
 return array (
   'order_now' => 'Commander Maintenant',
   'title' => 'Nourriture Bio & Savoureuse pour Votre Table',
-  'subtitle' => 'Découvrez les attractions, activités et plus encore les mieux notées',
+  'subtitle' => 'Savourez des plats délicieux livrés rapidement à votre porte, directement depuis les meilleurs restaurants près de chez vous.',
   'location' => 'Emplacement',
   'by_location' => 'Recherche par emplacement',
   'search' => 'Rechercher',
