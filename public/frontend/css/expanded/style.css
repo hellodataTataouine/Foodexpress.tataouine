@@ -4845,10 +4845,13 @@ input[type=number] {
     font-weight: 300;
     line-height: 20px;
 }
-
+a.nav-link {
+    color: #000;
+}
 .rest-menu-wrapper {
     position: relative;
     background-color: var(--white);
+
 }
 
 .rest-menu-wrapper.active {
