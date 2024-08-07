@@ -41,7 +41,7 @@ return array (
   'now_open' => 'Now Open',
   'open' => 'Open',
   'about' => 'About',
-  'reviews' => 'reviews',
+  'reviews' => 'Reviews',
   'delivery_hours' => 'Delivery Hours',
   'mon' => 'Mon',
   'sun' => 'Sun',

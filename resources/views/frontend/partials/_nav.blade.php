@@ -78,7 +78,7 @@
 
                     @if (Auth::guest())
                         <!--~~~~~~~~~~~~ BEFORE SIGNIN/SIGNUP CODE START ~~~~~~~~~~-->
-                        <div class="header-auth">
+                        {{-- <div class="header-auth">
                             <button type="button" class="header-auth-btn">
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -119,11 +119,11 @@
                                     <span> {{ __('topbar.register') }}</span>
                                 </a>
                             </nav>
-                        </div>
+                        </div> --}}
                         <!--~~~~~~~ BEFORE SIGNIN/SIGNUP CODE END ~~~~~~~~-->
                     @else
                         <!--~~~~~~~~~~~ AFTER SIGNIN/SIGNUP CODE START ~~~~~~-->
-                        <div class="header-account">
+                        {{-- <div class="header-account">
                             <button type="button" class="header-account-btn">
                                 <img src="{{ auth()->user()->image }}" alt="">
                                 <span>{{ __('topbar.hi') }}, {{ Str::of(auth()->user()->name)->limit(10, '..') }}
@@ -189,7 +189,7 @@
                             <span>{{ __('topbar.dashboard') }}</span>
                         </a>
                         <?php   } ?>
-                        <?php } ?>
+                        <?php } ?> --}}
                         <!--~~~~~  AFTER SIGNIN/SIGNUP CODE END ~~~-->
                     @endif
 

@@ -19,6 +19,7 @@ use App\Http\Services\RatingsService;
 use Illuminate\Support\Facades\Redirect;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\FrontendController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 class RestaurantController extends FrontendController
 {
@@ -79,8 +80,7 @@ class RestaurantController extends FrontendController
 
     private function loadRatings()
     {
-        $this->data['ratings'] = RestaurantRating::with('user')
-            ->where(['restaurant_id' => $this->restaurant->id, 'status' => RatingStatus::ACTIVE])
+        $this->data['ratings'] = RestaurantRating::where(['restaurant_id' => $this->restaurant->id, 'status' => RatingStatus::ACTIVE])
             ->paginate(5);
 
         $ratingInfo = $this->ratingsService->avgRating($this->restaurant->id);
@@ -145,7 +145,7 @@ class RestaurantController extends FrontendController
 
             }
 try{
-   
+
 
             $image = $image->generate(route('restaurant.show', $this->restaurant->slug));
 }
@@ -153,7 +153,7 @@ try{
     catch (\Exception $e) {
         // Handle the exception, you can log it or return a default image, etc.
         // Example:
-        \Log::error('Error generating image: ' . $e->getMessage());
+        Log::error('Error generating image: ' . $e->getMessage());
 
         // Optionally, you can return a default value or take some other action
         $image = null;
@@ -164,28 +164,47 @@ try{
         }
     }
 
-    public function Ratings(RatingsRequest $request)
+    public function ratings(RatingsRequest $request,$id)
     {
-        $restaurantRating = RestaurantRating::with('user')->where([
-            'user_id' => auth()->id(),
-            'restaurant_id' => $request->restaurant_id
-        ])->first();
+        // $restaurantRating = RestaurantRating::with('user')->where([
+        //     'user_id' => auth()->id(),
+        //     'restaurant_id' => $request->restaurant_id
+        // ])->first();
 
-        if ($restaurantRating) {
-            $restaurantRating->rating = $request->rating;
-            $restaurantRating->review = $request->review;
-            $restaurantRating->save();
-            return Redirect::back()->withSuccess('The Data Update Successfully');
-        } else {
-            $restaurantRating = new RestaurantRating;
-            $restaurantRating->user_id = auth()->id();
-            $restaurantRating->restaurant_id = $request->restaurant_id;
+        // if ($restaurantRating) {
+        //     $restaurantRating->rating = $request->rating;
+        //     $restaurantRating->review = $request->review;
+        //     $restaurantRating->save();
+        //     return Redirect::back()->withSuccess('The Data Update Successfully');
+        // } else {
+        //     $restaurantRating = new RestaurantRating;
+        //     $restaurantRating->user_id = auth()->id();
+        //     $restaurantRating->restaurant_id = $request->restaurant_id;
+        //     $restaurantRating->rating = $request->rating;
+        //     $restaurantRating->review = $request->review;
+        //     $restaurantRating->status = $request->status;
+        //     $restaurantRating->save();
+        //     return Redirect::back()->withSuccess('The Data Inserted Successfully');
+        // }
+        // $validate = $request->validate([
+        //     'name'       => 'required|string',
+        //     'lastname'   => 'required|string',
+        //     'rating'     => 'required|numeric|min:1|max:5',
+        //     'review'     => 'required|string|max:500',
+        //     'restaurant_id'    => 'required|numeric',
+        //     'status'     => 'required|numeric',
+        // ]);
+
+            $restaurantRating = new RestaurantRating();
+            // $restaurantRating->user_id = auth()->id();
+            $restaurantRating->name = $request->name;
+            $restaurantRating->lastname = $request->lastname;
+            $restaurantRating->restaurant_id = $id;
             $restaurantRating->rating = $request->rating;
             $restaurantRating->review = $request->review;
             $restaurantRating->status = $request->status;
             $restaurantRating->save();
             return Redirect::back()->withSuccess('The Data Inserted Successfully');
-        }
     }
 
 }

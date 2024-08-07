@@ -68,6 +68,7 @@
                                             stroke="#1F1F39" stroke-width="1.5" />
                                     </svg>
                                     <span> {{ \Illuminate\Support\Str::limit($restaurant->address, 65) }} </span>
+
                                 </div>
                             </div>
                             <div class="rest-btns">
@@ -102,7 +103,7 @@
                                         <span>{{ __('frontend.table') }} </span>
                                     </button>
                                 @endif
-                                <button type="button" class="rest-info-btn" data-bs-toggle="modal"
+                                {{-- <button type="button" class="rest-info-btn" data-bs-toggle="modal"
                                     data-bs-target="#shop-modal">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -114,7 +115,7 @@
                                         <path d="M7.99609 10.6665H8.00208" stroke="#EE1D48" stroke-width="1.5"
                                             stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                </button>
+                                </button> --}}
                             </div>
                         </div>
 
@@ -134,7 +135,143 @@
                         @endif
 
                         <div class="rest-menu-wrapper" id="scrollspy-menu">
-                            <div class="rest-menu-group">
+
+                                <div class="nav nav-tabs">
+                                    <a class="nav-link active" data-bs-toggle="tab" href="#about">{{ __('frontend.about') }}</a>
+                                    <a class="nav-link" data-bs-toggle="tab" href="#reviews">{{ __('frontend.reviews') }}</a>
+                                    <a class="nav-link"  href="{{ $restaurant->website }}" target="_blank">{{ __('frontend.order_now') }}</a>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="about">
+                                        <div class="shop-modal-about">
+                                            <ul>
+                                                <li>
+                                                    <h3>{{ __('frontend.delivery_hours') }} </h3>
+                                                    <p> {{ date('h:i A', strtotime($restaurant->opening_time)) }} -
+                                                        {{ date('h:i A', strtotime($restaurant->closing_time)) }} </p>
+                                                </li>
+                                                <li>
+                                                    <h3>{{ __('frontend.address') }}</h3>
+                                                    <p>{{ $restaurant->address }} </p>
+                                                </li>
+                                            </ul>
+                                            <img src="data:image/png;base64,{!! $qrCode !!}" alt="qr">
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="reviews">
+
+                                        {{-- @if (!blank($order_status)) --}}
+                                            <form action="{{ route('restaurant.ratings-update',$restaurant->id) }}" method="POST">
+                                                @csrf
+                                                <div id="add-review" class="add-review-box custom-width">
+                                                    <h5>{{ __('frontend.add_review') }}</h5>
+                                                    <hr>
+                                                    <div class="sub-ratings-container">
+                                                        <div class="add-sub-rating">
+                                                            <div class="sub-rating-title">{{ __('frontend.review') }}
+                                                                <i class="tip"
+                                                                    data-tip-content="{{ __('frontend.auality_customer') }}"></i>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <input class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" type="text" placeholder='{{__("frontend.first_name")}}'>
+
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <input class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" type="text" placeholder='{{__("frontend.last_name")}}'>
+                                                                    @if ($errors->has('latname'))
+                                                                    <span class="invalid-feedback" role="alert">
+                                                                        <strong>{{ $errors->first('lastname') }}</strong>
+                                                                    </span>
+                                                                @endif
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                            <div class="sub-rating-stars">
+                                                                <div class="clearfix"></div>
+                                                                <div class="leave-rating">
+                                                                    <input class="d-none" type="radio" value="5" name="rating"
+                                                                        {{ 5 == old('rating') ? 'checked' : '' }} id="rating-5">
+                                                                    <label for="rating-5" class="fa fa-star"></label>
+                                                                    <input class="d-none" type="radio" value="4" name="rating"
+                                                                        {{ 4 == old('rating') ? 'checked' : '' }} id="rating-4">
+                                                                    <label for="rating-4" class="fa fa-star"></label>
+                                                                    <input class="d-none" type="radio" value="3" name="rating"
+                                                                        {{ 3 == old('rating') ? 'checked' : '' }} id="rating-3">
+                                                                    <label for="rating-3" class="fa fa-star"></label>
+                                                                    <input class="d-none" type="radio" value="2" name="rating"
+                                                                        {{ 2 == old('rating') ? 'checked' : '' }} id="rating-2">
+                                                                    <label for="rating-2" class="fa fa-star"></label>
+                                                                    <input class="d-none" type="radio" value="1" name="rating"
+                                                                        {{ 1 == old('rating') ? 'checked' : '' }} id="rating-1">
+                                                                    <label for="rating-1" class="fa fa-star"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <input type="hidden" name="restaurant_id" value="{{ $restaurant->id }}">
+                                                    <input type="hidden" name="status" value="5">
+
+                                                    <div class="form-group mt-2 pt-2">
+                                                        <label class="reviewLabel">{{ __('frontend.write_review') }} <span
+                                                                class="text-danger">*</span> </label>
+                                                        <textarea name="review" type="text" cols="40" rows="3" aria-label="With textarea"
+                                                            placeholder="{{ __('frontend.write_review') }} " class="form-control @error('review') is-invalid @enderror">{{ old('review') }}</textarea>
+                                                        @if ($errors->has('review'))
+                                                            <span class="invalid-feedback" role="alert">
+                                                                <strong>{{ $errors->first('review') }}</strong>
+                                                            </span>
+                                                        @endif
+                                                    </div>
+
+                                                    <button type="submit" class="rest-book-btn">
+                                                        {{ __('frontend.submit_review') }}
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        {{-- @endif --}}
+                                        <br>
+                                        @if (!blank($ratings))
+                                            <ul class="shop-modal-review">
+                                                @foreach ($ratings as $rating)
+                                                    <li>
+                                                        <strong>{{ $rating->name.' '.$rating->lastname }}</strong>
+                                                        <dl>
+
+                                                            @for ($i = 0; $i < 5; $i++)
+                                                                @if ($i < $rating->rating)
+                                                                    <svg class="active" width="14" height="14"
+                                                                        viewBox="0 0 14 14" fill="none"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <path
+                                                                            d="M5.97191 1.37497C6.4383 0.599986 7.56186 0.599985 8.02825 1.37497L9.15178 3.24189C9.31933 3.5203 9.59263 3.71886 9.90919 3.79218L12.0319 4.28381C12.9131 4.48789 13.2603 5.55646 12.6674 6.23951L11.239 7.88495C11.026 8.13034 10.9216 8.45162 10.9497 8.77535L11.1381 10.9461C11.2163 11.8472 10.3073 12.5076 9.47449 12.1548L7.46819 11.3048C7.16899 11.1781 6.83117 11.1781 6.53197 11.3048L4.52568 12.1548C3.69283 12.5076 2.78386 11.8472 2.86206 10.9461L3.05045 8.77535C3.07855 8.45162 2.97416 8.13034 2.76115 7.88495L1.33279 6.23951C0.739863 5.55646 1.08706 4.48789 1.96824 4.28381L4.09097 3.79218C4.40753 3.71886 4.68083 3.5203 4.84838 3.24189L5.97191 1.37497Z"
+                                                                            stroke-width="1.5" />
+                                                                    </svg>
+                                                                @else
+                                                                    <svg width="14" height="14" viewBox="0 0 14 14"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path
+                                                                            d="M5.97191 1.37497C6.4383 0.599986 7.56186 0.599985 8.02825 1.37497L9.15178 3.24189C9.31933 3.5203 9.59263 3.71886 9.90919 3.79218L12.0319 4.28381C12.9131 4.48789 13.2603 5.55646 12.6674 6.23951L11.239 7.88495C11.026 8.13034 10.9216 8.45162 10.9497 8.77535L11.1381 10.9461C11.2163 11.8472 10.3073 12.5076 9.47449 12.1548L7.46819 11.3048C7.16899 11.1781 6.83117 11.1781 6.53197 11.3048L4.52568 12.1548C3.69283 12.5076 2.78386 11.8472 2.86206 10.9461L3.05045 8.77535C3.07855 8.45162 2.97416 8.13034 2.76115 7.88495L1.33279 6.23951C0.739863 5.55646 1.08706 4.48789 1.96824 4.28381L4.09097 3.79218C4.40753 3.71886 4.68083 3.5203 4.84838 3.24189L5.97191 1.37497Z"
+                                                                            stroke-width="1.5" />
+                                                                    </svg>
+                                                                @endif
+                                                            @endfor
+
+
+                                                            <div class="star-rating" data-rating="{{ $rating->rating }}"> </div>
+
+                                                            <dd> {{ $rating->updated_at->format('d M Y, h:i A') }}</dd>
+                                                        </dl>
+                                                        <p>{{ $rating->review }} </p>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                            <br>
+                                        @endif
+                                    </div>
+                            {{-- <div class="rest-menu-group">
                                 <button type="button" class="rest-swiper-prev fa-solid fa-chevron-left"></button>
                                 <div class="swiper rest-swiper">
                                     <nav class="swiper-wrapper">
@@ -152,7 +289,7 @@
                                     </nav>
                                 </div>
                                 <button type="button" class="rest-swiper-next fa-solid fa-chevron-right"></button>
-                            </div>
+                            </div> --}}
                         </div>
 
                         @livewire('show-page', ['restaurant' => $restaurant])
@@ -261,156 +398,6 @@
     </div>
     <!--====== Table BOOKING MODAL PART END ==========-->
 
-
-    <!--======= Resturent Infromation MODAL START =========-->
-    <div class="modal fade shop-modal" id="shop-modal" data-bs-backdrop="static">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="shop-modal-header">
-                    <button class="fa-regular fa-circle-xmark" type="button" data-bs-dismiss="modal"></button>
-                    <img src="{{ $restaurant->image }}" alt="restaurant">
-                </div>
-                <div class="shop-modal-meta">
-                    <h3>{{ $restaurant->name }} </h3>
-                    @if (!blank($restaurant->cuisines))
-                        <h4>
-                            @foreach ($restaurant->cuisines as $cuisine)
-                                {{ $cuisine->name }}
-                                @if (!$loop->last)
-                                    <span>-</span>
-                                @endif
-                            @endforeach
-                        </h4>
-                    @endif
-                    <p>{{ __('frontend.open') }} {{ date('h:i A', strtotime($restaurant->opening_time)) }} -
-                        {{ date('h:i A', strtotime($restaurant->closing_time)) }} </p>
-                </div>
-                <div class="nav nav-tabs">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#about">{{ __('frontend.about') }}</a>
-                    <a class="nav-link" data-bs-toggle="tab" href="#reviews">{{ __('frontend.reviews') }}</a>
-                    <a class="nav-link"  href="{{ $restaurant->website }}" target="_blank">{{ __('frontend.order_now') }}</a>
-                </div>
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="about">
-                        <div class="shop-modal-about">
-                            <ul>
-                                <li>
-                                    <h3>{{ __('frontend.delivery_hours') }} </h3>
-                                    <p> {{ date('h:i A', strtotime($restaurant->opening_time)) }} -
-                                        {{ date('h:i A', strtotime($restaurant->closing_time)) }} </p>
-                                </li>
-                                <li>
-                                    <h3>{{ __('frontend.address') }}</h3>
-                                    <p>{{ $restaurant->address }} </p>
-                                </li>
-                            </ul>
-                            <img src="data:image/png;base64,{!! $qrCode !!}" alt="qr">
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="reviews">
-
-                        @if (!blank($order_status))
-                            <form action="{{ route('restaurant.ratings-update') }}" method="POST"
-                                enctype="multipart/form-data">
-                                @csrf
-                                <div id="add-review" class="add-review-box custom-width">
-                                    <h5>{{ __('frontend.add_review') }}</h5>
-                                    <hr>
-                                    <div class="sub-ratings-container">
-                                        <div class="add-sub-rating">
-                                            <div class="sub-rating-title">{{ __('frontend.review') }}
-                                                <i class="tip"
-                                                    data-tip-content="{{ __('frontend.auality_customer') }}"></i>
-                                            </div>
-                                            <div class="sub-rating-stars">
-                                                <div class="clearfix"></div>
-                                                <div class="leave-rating">
-                                                    <input class="d-none" type="radio" value="5" name="rating"
-                                                        {{ 5 == old('rating') ? 'checked' : '' }} id="rating-5">
-                                                    <label for="rating-5" class="fa fa-star"></label>
-                                                    <input class="d-none" type="radio" value="4" name="rating"
-                                                        {{ 4 == old('rating') ? 'checked' : '' }} id="rating-4">
-                                                    <label for="rating-4" class="fa fa-star"></label>
-                                                    <input class="d-none" type="radio" value="3" name="rating"
-                                                        {{ 3 == old('rating') ? 'checked' : '' }} id="rating-3">
-                                                    <label for="rating-3" class="fa fa-star"></label>
-                                                    <input class="d-none" type="radio" value="2" name="rating"
-                                                        {{ 2 == old('rating') ? 'checked' : '' }} id="rating-2">
-                                                    <label for="rating-2" class="fa fa-star"></label>
-                                                    <input class="d-none" type="radio" value="1" name="rating"
-                                                        {{ 1 == old('rating') ? 'checked' : '' }} id="rating-1">
-                                                    <label for="rating-1" class="fa fa-star"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <input type="hidden" name="restaurant_id" value="{{ $restaurant->id }}">
-                                    <input type="hidden" name="status" value="5">
-
-                                    <div class="form-group mt-2 pt-2">
-                                        <label class="reviewLabel">{{ __('frontend.write_review') }} <span
-                                                class="text-danger">*</span> </label>
-                                        <textarea name="review" type="text" cols="40" rows="3" aria-label="With textarea"
-                                            placeholder="{{ __('frontend.write_review') }} " class="form-control @error('review') is-invalid @enderror">{{ old('review') }}</textarea>
-                                        @if ($errors->has('review'))
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $errors->first('review') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-
-                                    <button type="submit" class="rest-book-btn">
-                                        {{ __('frontend.submit_review') }}
-                                    </button>
-                                </div>
-                            </form>
-                        @endif
-                        <br>
-                        @if (!blank($ratings))
-                            <ul class="shop-modal-review">
-                                @foreach ($ratings as $rating)
-                                    <li>
-                                        {{-- <h3>{{ $rating->user->name }} </h3> --}}
-                                        <dl>
-
-                                            @for ($i = 0; $i < 5; $i++)
-                                                @if ($i < $rating->rating)
-                                                    <svg class="active" width="14" height="14"
-                                                        viewBox="0 0 14 14" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M5.97191 1.37497C6.4383 0.599986 7.56186 0.599985 8.02825 1.37497L9.15178 3.24189C9.31933 3.5203 9.59263 3.71886 9.90919 3.79218L12.0319 4.28381C12.9131 4.48789 13.2603 5.55646 12.6674 6.23951L11.239 7.88495C11.026 8.13034 10.9216 8.45162 10.9497 8.77535L11.1381 10.9461C11.2163 11.8472 10.3073 12.5076 9.47449 12.1548L7.46819 11.3048C7.16899 11.1781 6.83117 11.1781 6.53197 11.3048L4.52568 12.1548C3.69283 12.5076 2.78386 11.8472 2.86206 10.9461L3.05045 8.77535C3.07855 8.45162 2.97416 8.13034 2.76115 7.88495L1.33279 6.23951C0.739863 5.55646 1.08706 4.48789 1.96824 4.28381L4.09097 3.79218C4.40753 3.71886 4.68083 3.5203 4.84838 3.24189L5.97191 1.37497Z"
-                                                            stroke-width="1.5" />
-                                                    </svg>
-                                                @else
-                                                    <svg width="14" height="14" viewBox="0 0 14 14"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M5.97191 1.37497C6.4383 0.599986 7.56186 0.599985 8.02825 1.37497L9.15178 3.24189C9.31933 3.5203 9.59263 3.71886 9.90919 3.79218L12.0319 4.28381C12.9131 4.48789 13.2603 5.55646 12.6674 6.23951L11.239 7.88495C11.026 8.13034 10.9216 8.45162 10.9497 8.77535L11.1381 10.9461C11.2163 11.8472 10.3073 12.5076 9.47449 12.1548L7.46819 11.3048C7.16899 11.1781 6.83117 11.1781 6.53197 11.3048L4.52568 12.1548C3.69283 12.5076 2.78386 11.8472 2.86206 10.9461L3.05045 8.77535C3.07855 8.45162 2.97416 8.13034 2.76115 7.88495L1.33279 6.23951C0.739863 5.55646 1.08706 4.48789 1.96824 4.28381L4.09097 3.79218C4.40753 3.71886 4.68083 3.5203 4.84838 3.24189L5.97191 1.37497Z"
-                                                            stroke-width="1.5" />
-                                                    </svg>
-                                                @endif
-                                            @endfor
-
-
-                                            <div class="star-rating" data-rating="{{ $rating->rating }}"> </div>
-
-                                            <dd> {{ $rating->updated_at->format('d M Y, h:i A') }}</dd>
-                                        </dl>
-                                        <p>{{ $rating->review }} </p>
-                                    </li>
-                                @endforeach
-                            </ul>
-                            <br>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--======= Resturent Infromation MODAL END ==========-->
 @endsection
 
 @push('js')

@@ -8,7 +8,8 @@
 @endpush
 
 @section('main-content')
-
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <!--======== BANNER PART START ==========-->
     <section class="banner section-gap-90" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
         <div class="container">
@@ -21,6 +22,7 @@
                     <p class="banner-subtitle"> {{ __('frontend.subtitle') }} </p>
                     <form method="GET" action="{{ route('search') }}">
                         <div class="main-search-input">
+                            <div id="map" style="display: none;"></div>
                             <input type="hidden" id="lat" name="lat" required="" value="">
                             <input type="hidden" id="long" name="long" required="" value="">
                             <input type="hidden" id="expedition" name="expedition" value="{{ __('all') }}">
@@ -137,7 +139,7 @@
 
 
     <!--========  APP PART START ======-->
-    @if (setting('android_app_link') || setting('ios_app_link'))
+    {{-- @if (setting('android_app_link') || setting('ios_app_link'))
         <section class="app section-gap-90" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
             <div class="container">
                 <div class="row">
@@ -169,7 +171,7 @@
                 </div>
             </div>
         </section>
-    @endif
+    @endif --}}
     <!--========== APP PART END =======-->
 
 
@@ -275,7 +277,9 @@
 @endsection
 
 @push('js')
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <script type="text/javascript" src="{{ asset('frontend/js/map-current.js') }}"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ setting('google_map_api_key') }}&sensor=false&libraries=places&callback=initAutocomplete"></script>
+    {{-- <script src="https://maps.googleapis.com/maps/api/js?key={{ setting('google_map_api_key') }}&sensor=false&libraries=places&callback=initAutocomplete"></script> --}}
 @endpush
 

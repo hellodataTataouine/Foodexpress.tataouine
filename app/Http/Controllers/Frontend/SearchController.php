@@ -29,7 +29,7 @@ class SearchController extends FrontendController
         ];
     }
 
-    public function filter(Request $request){ 
+    public function filter(Request $request){
         $expedition = $request->get('expedition');
 
         $restaurants = Restaurant::query()
@@ -59,6 +59,9 @@ class SearchController extends FrontendController
             ->select(DB::raw('*, ( 6367 * acos( cos( radians('.$request->get('lat').') ) * cos( radians( `lat` ) ) * cos( radians( `long` ) - radians('.$request->get('long').') ) + sin( radians('.$request->get('lat').') ) * sin( radians( `lat` ) ) ) ) AS distance'))
                 ->having('distance', '<', $request->get('distance') ?? setting('geolocation_distance_radius'))
                 ->orderBy('distance');
+            // $res=$restaurants->get();
+            // dd($this->calculateDistance($res[0]->lat,$res[0]->long,$request->get('lat'),$request->get('long')));
+            //     dd($restaurants->get(),$request->get('lat'),$request->get('long'));
         }
 
         $mapRestaurants = [];
@@ -82,4 +85,24 @@ class SearchController extends FrontendController
         $this->data['current_data'] = Carbon::now()->format('H:i:s');
         return view('frontend.search', $this->data);
     }
+
+        function calculateDistance($lat1, $lon1, $lat2, $lon2)
+        {
+            $earthRadius = 6371; // Earth radius in kilometers
+
+            $dLat = deg2rad($lat2 - $lat1);
+            $dLon = deg2rad($lon2 - $lon1);
+
+            $a = sin($dLat / 2) * sin($dLat / 2) +
+                 cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+                 sin($dLon / 2) * sin($dLon / 2);
+
+            $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+            $distance = $earthRadius * $c;
+
+            return $distance; // Distance in kilometers
+        }
+
+
 }

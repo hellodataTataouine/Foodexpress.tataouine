@@ -25,6 +25,8 @@ class RatingsRequest extends FormRequest
     public function rules()
     {
         return [
+            'name'       => 'required|string',
+            'lastname'   => 'required|string',
             'rating'     => 'required|numeric|min:1|max:5',
             'review'     => 'required|string|max:500',
             'restaurant_id'    => 'required|numeric',

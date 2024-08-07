@@ -79,12 +79,12 @@ Route::group(['prefix' => 'install', 'as' => 'LaravelInstaller::', 'middleware' 
     Route::post('purchase-code',                            [PurchaseCodeController::class, 'action'])->name('purchase_code.check');
     Route::get('final',                                     [FinalController::class, 'finish'])->name('final');
 });
-
+Route::post('restaurant/ratings/{id}',                       [RestaurantController::class, 'ratings'])->name('restaurant.ratings-update')->middleware('guest');
 Route::group(['middleware' => ['installed', 'license-activate']], function () {
     Route::get('/home',                                     [HomeController::class, 'index'])->name('home');
     Route::get('/',                                         [HomeController::class, 'index'])->name('home');
     Route::get('restaurant/{restaurant}',                   [RestaurantController::class, 'show'])->name('restaurant.show');
-    Route::post('restaurant/ratings',                       [RestaurantController::class, 'Ratings'])->name('restaurant.ratings-update')->middleware('auth');
+
 
     Route::get('reservation/booking',                       [ReservationController::class, 'booking'])->name('restaurant.reservation')->middleware('auth');
     Route::get('restaurant/reservation/booking',            [ReservationController::class, 'store'])->name('restaurant.reservation.store')->middleware('auth');

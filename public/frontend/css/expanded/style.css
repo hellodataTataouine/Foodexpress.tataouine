@@ -922,6 +922,7 @@ input[type=number] {
 
 .section-gap-66 {
     margin-bottom: 66px;
+    background: #FFF9FA;
 }
 
 @media (max-width: 767px) {

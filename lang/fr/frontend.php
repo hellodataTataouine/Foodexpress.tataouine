@@ -41,7 +41,7 @@ return array (
   'now_open' => 'Ouvert Maintenant',
   'open' => 'Ouvert',
   'about' => 'À Propos',
-  'reviews' => 'avis',
+  'reviews' => 'Avis',
   'delivery_hours' => 'Heures de Livraison',
   'mon' => 'Lun',
   'sun' => 'Dim',

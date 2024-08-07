@@ -1,88 +1,96 @@
-/**
- *
- * You can write your JS code here, DO NOT touch the default style file
- * because it will make it harder for you to update.
- *
- */
-
 "use strict";
-var mapLat = mapLat;
-var mapLong = mapLong;
 
+var map; // Declare map globally
+var mapLat = mapLat || 0; // Fallback to 0 if undefined
+var mapLong = mapLong || 0; // Fallback to 0 if undefined
+
+// Initialize the map and autocomplete functionality
 function initAutocomplete() {
-    if (mapLat != '' && mapLong != '') {
-        getLocation(mapLat, mapLong);
-    } else {
-        getLocation(null, null);
-    }
-    var input = document.getElementById('autocomplete-input');
-    var autocomplete = new google.maps.places.Autocomplete(input);
+    map = L.map('map').setView([mapLat, mapLong], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-    autocomplete.addListener('place_changed', function () {
-        var place = autocomplete.getPlace();
-        $('#lat').val(place.geometry.location.lat());
-        $('#long').val(place.geometry.location.lng());
-        if (!place.geometry) {
-            return;
+    var geocoder = L.Control.Geocoder.nominatim();
+
+    // Check if we have coordinates to start with
+    if (mapLat && mapLong) {
+        showGetPosition(mapLat, mapLong, map, geocoder);
+    } else {
+        getLocation(map, geocoder);
+    }
+
+    // Setup autocomplete functionality
+    var input = document.getElementById('autocomplete-input');
+    var autocomplete = new L.Control.Geocoder(input, { geocoder: geocoder });
+    autocomplete.on('select', function(e) {
+        var latlng = e.latlng;
+        $('#lat').val(latlng.lat);
+        $('#long').val(latlng.lng);
+        if (map) {
+            map.setView(latlng, 13);
         }
     });
 
     if ($('.main-search-input-item')[0]) {
         setTimeout(function () {
-            $(".pac-container").prependTo("#autocomplete-container");
+            $(".leaflet-control-geocoder").prependTo("#autocomplete-container");
         }, 300);
     }
 }
-var geocoder;
 
-function getLocation(lat, long) {
-    geocoder = new google.maps.Geocoder();
+// Get the user's location and show it on the map
+function getLocation(map, geocoder) {
     if (navigator.geolocation) {
-        if (lat && long) {
-            showGetPosition(lat, long)
-        } else {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        }
+        navigator.geolocation.getCurrentPosition(function(position) {
+            showPosition(position, map, geocoder);
+        }, function(error) {
+            alert("Error getting location: " + error.message);
+        });
     } else {
-        var msg = "Geolocation is not supported by this browser.";
-        alert(msg);
+        alert("Geolocation is not supported by this browser.");
     }
 }
 
-function showPosition(position) {
-    var Latitude = position.coords.latitude;
-    var Longitude = position.coords.longitude;
-    $('#lat').val(Latitude);
-    $('#long').val(Longitude);
+// Display the user's position on the map
+function showPosition(position, map, geocoder) {
+    if (!map) {
+        console.error('Map is not defined');
+        return;
+    }
+    var latlng = L.latLng(position.coords.latitude, position.coords.longitude);
+    $('#lat').val(latlng.lat);
+    $('#long').val(latlng.lng);
 
-    var latlng = new google.maps.LatLng(Latitude, Longitude);
-    geocoder.geocode({
-        'latLng': latlng
-    }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            if (results[1]) {
-                $('#autocomplete-input').val(results[0].formatted_address);
-            }
+    map.setView(latlng, 13);
+
+    geocoder.reverse(latlng, map.options.crs.scale(map.getZoom()), function(results) {
+        if (results.length > 0) {
+            $('#autocomplete-input').val(results[0].name || results[0].formattedAddress || results[0].address);
         }
-    })
-
+    });
 }
 
-function showGetPosition(lat, long) {
-    var Latitude = lat;
-    var Longitude = long;
-    $('#lat').val(Latitude);
-    $('#long').val(Longitude);
+// Show a specific position on the map based on given coordinates
+function showGetPosition(lat, long, map, geocoder) {
+    if (!map) {
+        console.error('Map is not defined');
+        return;
+    }
+    var latlng = L.latLng(lat, long);
+    $('#lat').val(latlng.lat);
+    $('#long').val(latlng.lng);
 
-    var latlng = new google.maps.LatLng(Latitude, Longitude);
-    geocoder.geocode({
-        'latLng': latlng
-    }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            if (results[1]) {
-                $('#autocomplete-input').val(results[0].formatted_address);
-            }
+    map.setView(latlng, 13);
+
+    geocoder.reverse(latlng, map.options.crs.scale(map.getZoom()), function(results) {
+        if (results.length > 0) {
+            $('#autocomplete-input').val(results[0].name || results[0].formattedAddress || results[0].address);
         }
-    })
+    });
 }
 
+// Call initAutocomplete when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initAutocomplete();
+});

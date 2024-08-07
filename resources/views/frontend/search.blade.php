@@ -10,6 +10,8 @@
 @endpush
 
 @section('main-content')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <!--======= RESTAURANT PART START ========-->
     <section class="restaurant section-gap-66">
         <div class="container">
@@ -44,6 +46,7 @@
                 </div>
 
                 <form method="GET" action="{{ route('search', Request::query()) }}" id="myForm">
+                    <div id="map" style="display: none;"></div>
                     <input type="hidden" class="form-control" id="lat" name="lat"
                         value="{{ Request::get('lat') }}">
                     <input type="hidden" class="form-control" id="long" name="long"
@@ -67,7 +70,7 @@
                             </div>
                         </div>
 
-                        <div class="filter-select">
+                        {{-- <div class="filter-select">
                             <div class="dropdownParent">
                                 <span class="custonDropdown d-flex justify-content-center">
                                     {{ __('Cuisines') }}
@@ -98,7 +101,7 @@
 
                                 </ul>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="filter-select">
                             <span class="custonDropdown d-flex justify-content-center">
                                 {{ __('frontend.distance_radius') }}
@@ -154,18 +157,19 @@
         var mapLat = '{{ Request::get('lat ') }}';
         var mapLong = '{{ Request::get('long ') }}';
     </script>
-
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
     <script type="text/javascript" src="{{ asset('frontend/js/rangeslider.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/js/customrangeslider.js') }}"></script>
 
     <script type="text/javascript" src="{{ asset('frontend/js/map-current.js') }}"></script>
     <script type="text/javascript" src="{{ asset('themes/scripts/typed.js') }}"></script>
-    <script
+    {{-- <script
         src="https://maps.googleapis.com/maps/api/js?key={{ setting('google_map_api_key') }}&libraries=places&callback=initAutocomplete">
-    </script>
-    <script type="text/javascript" src="{{ asset('themes/scripts/infobox.min.js') }}"></script>
+    </script> --}}
+    {{-- <script type="text/javascript" src="{{ asset('themes/scripts/infobox.min.js') }}"></script> --}}
     <script type="text/javascript" src="{{ asset('themes/scripts/markerclusterer.js') }}"></script>
 
     <script src="{{ asset('js/search/search.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('themes/scripts/maps.js') }}"></script>
+    {{-- <script type="text/javascript" src="{{ asset('themes/scripts/maps.js') }}"></script> --}}
 @endpush
