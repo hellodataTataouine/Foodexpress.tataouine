@@ -15,7 +15,7 @@ class HomeController extends FrontendController
     public function __construct()
     {
         parent::__construct();
-        $this->data['site_title'] = "Home";
+        $this->data['site_title'] = __('messgaes.home');
     }
 
 
