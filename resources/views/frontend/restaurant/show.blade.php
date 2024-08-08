@@ -14,7 +14,7 @@
 @section('main-content')
 
     <!--====== RESTAURANT PART START =========-->
-    <section class="restaurant">
+    <section class="restaurant" dir={{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}>
         <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-8 rest-col">
