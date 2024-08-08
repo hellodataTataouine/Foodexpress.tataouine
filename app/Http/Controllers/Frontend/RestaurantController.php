@@ -204,7 +204,7 @@ try{
             $restaurantRating->review = $request->review;
             $restaurantRating->status = $request->status;
             $restaurantRating->save();
-            return Redirect::back()->withSuccess('The Data Inserted Successfully');
+            return Redirect::back()->withSuccess(__('messages.review_submitted_successfully'));
     }
 
 }
