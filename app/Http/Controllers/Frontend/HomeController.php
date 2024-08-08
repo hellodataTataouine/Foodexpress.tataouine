@@ -15,17 +15,19 @@ class HomeController extends FrontendController
     public function __construct()
     {
         parent::__construct();
-        $this->data['site_title'] = __('messages.home');
+        $this->data['site_title'] = __('frontend.home');
     }
 
 
     public function index()
     {
+        $this->data['site_title'] = __('frontend.home');
         $this->data['vouchers']               = $this->getValidVouchers();
         $this->data['cuisines']               = $this->getActiveCuisines();
         $this->data['bestSellingRestaurants'] = $this->getBestSellingRestaurants();
         $this->data['bestSellingCuisines']    = $this->getBestSellingCuisines();
         $this->data['current_data']           =  now()->format('H:i:s');
+        
         return view('frontend.home', $this->data);
     }
 

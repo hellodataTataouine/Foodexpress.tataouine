@@ -31,7 +31,7 @@ class SearchController extends FrontendController
 
     public function filter(Request $request){
         $expedition = $request->get('expedition');
-
+        $this->data['site_title'] = __('messages.search_restaurants');
         $restaurants = Restaurant::query()
             ->with('media')
             ->where(['status' => Status::ACTIVE, 'current_status' => Status::ACTIVE]);

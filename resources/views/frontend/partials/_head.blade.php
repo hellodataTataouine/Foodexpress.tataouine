@@ -19,7 +19,7 @@
             {{ '' }}
         @endif
     </title>
-
+    
     <!-- FAVICON -->
     <link href="{{ asset('images/' . setting('fav_icon')) }}" rel="shortcut icon" type="image/x-icon">
 

@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <!--======= RESTAURANT PART START ========-->
-    <section class="restaurant section-gap-66">
+    <section class="restaurant section-gap-66" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}" >
         <div class="container">
             <div class="filter-group" id="filter">
                 <div class="swiper filter-swiper">

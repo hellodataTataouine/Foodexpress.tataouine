@@ -36,6 +36,7 @@ class RestaurantController extends FrontendController
     {
        // dd($restaurant);
         $this->restaurant = $restaurant;
+        $this->data['site_title'] = $this->restaurant->name;
         $this->filepond   = $filepond;
 
         if (session('session_cart_restaurant_id') !=  $this->restaurant->id) {
